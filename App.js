@@ -1,58 +1,83 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+import React  from 'react';
+import { StackNavigator } from "react-navigation"
+import LoginView from './src/views/LoginView';
+import SignupView from './src/views/SignupView'
+import HomePageView from "./src/views/HomePageView"
+import MyRecordPageView from "./src/views/MyRecordPageView"
+import AddMyRecordView from "./src/views/AddMyRecordView"
+import MyPageListView from "./src/views/MyPageListView"
+import MyPageInformationsView from "./src/views/MyPageInformationsView"
+import ChatView from "./src/views/ChatView"
+import ShowMyProfileView from "./src/views/ShowMyProfileView"
+import EditMyProfileView from "./src/views/EditMyProfileView"
+import ChangePasswordView from "./src/views/ChangePasswordView"
+import ShowMedicalTermView from "./src/views/ShowMedicalTermView"
+import ShowBloodTestTermView from "./src/views/ShowBloodTestTermView"
+import ShowReceiptTermView from "./src/views/ShowReceiptTermView"
+import ShowPrescriptionTermView from "./src/views/ShowPrescriptionTermView"
+import ShowMedicalListView from "./src/views/ShowMedicalListView"
+import ShowMedicalDetailView from './src/views/ShowMedicalDetailView'
 
-import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
-
-type Props = {};
-export default class App extends Component<Props> {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+//Pages were used by StackNavigator
+const RootNavigator = StackNavigator({
+        Login: {
+            screen: LoginView
+        },
+        Signup: {
+            screen: SignupView
+        },
+        Home: {
+            screen: HomePageView,
+        },
+        MyRecord: {
+            screen: MyRecordPageView,
+        },
+        MyPageList: {
+            screen: MyPageListView,
+        },
+        AddMyRecord: {
+            screen: AddMyRecordView,
+        },
+        ShowMyProfile: {
+            screen: ShowMyProfileView,
+        },
+        EditMyProfile: {
+            screen: EditMyProfileView,
+        },
+        ChangePassword: {
+            screen: ChangePasswordView,
+        },
+        MyPageInformations: {
+            screen: MyPageInformationsView,
+        },
+        Chat: {
+            screen: ChatView,
+        },
+        ShowMedicalTerm: {
+            screen: ShowMedicalTermView,
+        },
+        ShowBloodTestTerm: {
+            screen: ShowBloodTestTermView,
+        },
+        ShowReceiptTerm: {
+            screen: ShowReceiptTermView,
+        },
+        ShowPrescriptionTerm: {
+            screen: ShowPrescriptionTermView,
+        },
+        ShowMedicalList: {
+            screen: ShowMedicalListView,
+        },
+        ShowMedicalDetai: {
+            screen: ShowMedicalDetailView,
+        }
+    },
+    {
+        navigationOptions: {
+            headerStyle: {
+                backgroundColor: 'lightblue',
+            },
+        },
+    },
+);
+export default RootNavigator
