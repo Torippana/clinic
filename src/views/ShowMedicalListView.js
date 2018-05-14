@@ -16,16 +16,14 @@ export default class ShowMedicalListView extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            termYear: null,
+            termYear: this.props.navigation.state,
         }
     }
     componentWillMount() {
         const { params } = this.props.navigation.state
-        console.log( params )
-        const termYear = params.termYear
-        const startYear = `${termYear}01`
-        const endYear = `${termYear}31`
-        console.log(termYear)
+        const startYear = `20180401`
+        const endYear = `20180531`
+        console.log(this.state.termYear)
         const { currentUser } = firebase.auth()
         let medicalTerm = firebase.database()
         .ref(`medical_data/${currentUser.uid}`)

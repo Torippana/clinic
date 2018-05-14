@@ -35,7 +35,7 @@ export default class ShowMedicalTermView extends Component {
     render() {
         const MedicalTermArray = this.state.medicalDataTerm
         let medicalTermList =[]
-        for ( key in MedicalTermArray ) {
+        for (key in MedicalTermArray) {
             medicalTermList.push(
                 <RecordListItem
                     date={key}

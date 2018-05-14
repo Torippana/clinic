@@ -14,8 +14,8 @@ export default class AddMyRecordView extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            uri: "",
-            imageData: "",
+            imageDataUri: [],
+            imageData: [],
         }
     }
     openPicker = () => {
@@ -28,51 +28,75 @@ export default class AddMyRecordView extends Component {
                 console.log('ImagePicker Error: ', response.error);
             }
             else {
-                let source = { uri: response.uri}
-                let data = { imageData: response}
-                this.setState(data)
-                this.setState(source)
+                this.setState({
+                    imageDataUri: [response.uri, ...this.state.imageDataUri],
+                    imageData: [response.data, ...this.state.imageData]
+                })
                 console.log('could set state!!')
                 console.log(this.state.imageData)
-                this.fileUploader()
             }
         })
     }
     fileUploader() {
-        // Create a root reference
-        const storageRef = firebase.storage().ref();
-        // Create file metadata including the content type
-        const metadata = {
-            contentType: 'image/jpeg',
-        };
-        const { currentUser } = firebase.auth()
-        // Upload the file and metadata to storage
-        storageRef.child(`users/${currentUser.uid}/images/${this.state.imageData.fileName}`)
-        .putString(this.state.imageData.data,'base64' , metadata)
-        .then((snapshot) => {
-            console.log(snapshot.downloadURL)
-            console.log('storage uploaded!!')
-            //upload to database
-            firebase.database()
-            .ref(`users/${currentUser.uid}/images/`)
-            .set(
-                snapshot.downloadURL
-            )
-            console.log('database uploaded!!')
-        })
-        .catch((error) => {
-            console.log(error)
-        })
+            const imageData = this.state.imageData
+        if (imageData.length > 0) {
+            for(let i = 0; i < imageData.length; i++) {
+                // Create a root reference
+                const storageRef = firebase.storage().ref();
+                // Create file metadata including the content type
+                const metadata = {
+                    contentType: 'image/jpeg',
+                };
+                const date = new Date()
+                const uploadDate = date.toLocaleDateString()
+                const uploadTimeStamp = date.getTime()
+                const { currentUser } = firebase.auth()
+                // Upload the file and metadata to storage
+                storageRef.child(`users/${currentUser.uid}/imagesNonEdit/${currentUser.uid}${uploadTimeStamp}`)
+                .putString(this.state.imageData[i],'base64' , metadata)
+                .then((snapshot) => {
+                    console.log('storage uploaded!!')
+                    //upload to database
+                    firebase.database()
+                    .ref(`users/${currentUser.uid}/imagesNonEdit/${currentUser.uid}${uploadTimeStamp}`)
+                    .set({
+                        uri: snapshot.downloadURL,
+                        date: uploadDate
+                    })
+                    console.log(uploadDate)
+                    console.log('database uploaded!!')
+                    //画面戻す
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+            }
+        }
     }
 
     render() {
-        return (
-            <View style={styles.container}>
-                <Image style={styles.image} source={{uri: this.state.uri}} />
-                <TouchableOpacity onPress={this.openPicker.bind(this)}>
+        let imageList = []
+        for (let i = 0; i < this.state.imageDataUri.length; i++) {
+            imageList.push(
+                <Image key={[i]} style={styles.image} source={{uri: this.state.imageDataUri[i]}} />
+            )
+        }
+        let showbutton = ''
+        if (imageList.length < 3) {
+            showbutton =
+                <TouchableOpacity onPress={() => this.openPicker()}>
                     <Text style={styles.button}>Select a Photo</Text>
                 </TouchableOpacity>
-
+        } else {
+            showbutton =
+                <TouchableOpacity onPress={() => this.fileUploader()}>
+                    <Text style={styles.button}>up Load</Text>
+                </TouchableOpacity>
+            }
+        return (
+            <View style={styles.container}>
+                {imageList}
+                {showbutton}
             </View>
         )
     }
