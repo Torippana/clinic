@@ -16,29 +16,34 @@ export default class ShowMedicalListView extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            termYear: this.props.navigation.state,
+            RecordListTerm: null,
         }
     }
     componentWillMount() {
         const { params } = this.props.navigation.state
-        const startYear = `20180401`
-        const endYear = `20180531`
-        console.log(this.state.termYear)
+        this.setState({ RecordListTerm: params.yearMonth })
+        //前画面で押された期間に合わせて、orderされた値だけ出す
+        console.log(params)
+        console.log(params.yearMonth)
+        const startYearMonth = Number(`${params.yearMonth}01`)
+        const endYearMonth = Number(`${params.yearMonth}31`)
         const { currentUser } = firebase.auth()
-        let medicalTerm = firebase.database()
+        firebase.database()
         .ref(`medical_data/${currentUser.uid}`)
         .orderByChild('timestamp')
-        .startAt(startYear)
-        .endAt(endYear)
+        .startAt(startYearMonth)
+        .endAt(endYearMonth)
         .on('child_added', function(data) {
             console.log(data.val());
         });
+
     }
     render() {
         return (
             <View style={styles.container}>
                 <RecordHeadBar>{NAME_OF_RECORD.Medical}</RecordHeadBar>
-                <RecordTermBar>押された期間の名前にする</RecordTermBar>
+                <RecordTermBar>{this.state.RecordListTerm}</RecordTermBar>
+
                 <RecordListNameItem
                     hospitalName={'はるクリニック'}
                     date={'2018/01/23'}
@@ -49,7 +54,7 @@ export default class ShowMedicalListView extends Component {
                 <RecordListNameItem
                     hospitalName={'テストクリニック'}
                     date={'2018/01/30'}
-                    onPress={() => this.props.navigation.navigate('ShowMedicalList')}
+                    onPress={() => this.props.navigation.navigate('ShowMedicalDetai')}
                     alertComment={'再提出'}
                     alertNumber={null}
                 />

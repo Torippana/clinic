@@ -40,4 +40,3 @@ export const config = {
     messagingSenderId: ENV.FIREBASE_SENDER_ID
 }
 firebase.initializeApp(config);
-require("firebase/firestore");

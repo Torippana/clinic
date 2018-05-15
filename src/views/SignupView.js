@@ -52,9 +52,9 @@ export default class SignupView extends React.Component{
         }
     }
     createUserData() {
-        const db = firebase.firestore()
+        const db = firebase.database()
         const { currentUser } = firebase.auth()
-        db.collection(`users/${currentUser.uid}/profiles`).doc('Profile')
+        db.ref(`users/${currentUser.uid}/profiles`)
         .set({
             name: '',
             nameKana: '',

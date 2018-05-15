@@ -6,9 +6,11 @@ import {
     PixelRatio,
     TouchableOpacity,
     Image,
+    Alert
 } from 'react-native'
 import firebase from 'firebase'
 import ImagePicker from 'react-native-image-picker'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 export default class AddMyRecordView extends Component {
     constructor(props) {
@@ -17,6 +19,23 @@ export default class AddMyRecordView extends Component {
             imageDataUri: [],
             imageData: [],
         }
+    }
+    //アップロード押し下げ後アラート出してOK押したらUPload
+    showConfirmAlert() {
+        Alert.alert(
+            'タイトル',
+            '説明説明説明説明',
+                [
+                {text: 'キャンセル', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                {text: '変更を実行', onPress: () => console.log('OK Pressed'), style: 'destructive'},
+                ],
+            { cancelable: false }
+        )
+    }
+    showAlert() {
+        Alert.alert(
+         'アップロードが完了しました',
+        )
     }
     openPicker = () => {
         ImagePicker.showImagePicker({}, response => {
@@ -63,9 +82,11 @@ export default class AddMyRecordView extends Component {
                         uri: snapshot.downloadURL,
                         date: uploadDate
                     })
-                    console.log(uploadDate)
                     console.log('database uploaded!!')
-                    //画面戻す
+                    //最後だけ実行させる・・（ページ遷移・要修正）
+                    if( i === imageData.length - 1 ){
+                        console.log('ループが終わりました。');
+                    }
                 })
                 .catch((error) => {
                     console.log(error)
@@ -81,22 +102,36 @@ export default class AddMyRecordView extends Component {
                 <Image key={[i]} style={styles.image} source={{uri: this.state.imageDataUri[i]}} />
             )
         }
-        let showbutton = ''
-        if (imageList.length < 3) {
-            showbutton =
+        let showButton = ''
+        if (imageList.length < 2) {
+            showButton =
                 <TouchableOpacity onPress={() => this.openPicker()}>
-                    <Text style={styles.button}>Select a Photo</Text>
+                    <Icon
+                        style={styles.icon}
+                        name={'photo'}
+                        size={60}
+                        color='#000'
+                    >
+                    </Icon>
+                    <Text style={styles.button}>写真をアップロードする</Text>
                 </TouchableOpacity>
         } else {
-            showbutton =
-                <TouchableOpacity onPress={() => this.fileUploader()}>
-                    <Text style={styles.button}>up Load</Text>
-                </TouchableOpacity>
+            showButton = null
             }
+        let uploadButton = ''
+        if (imageList.length >= 1) {
+            uploadButton =
+                <TouchableOpacity onPress={() => this.fileUploader()}>
+                    <Text style={styles.button}>up Loadする</Text>
+                </TouchableOpacity>
+        } else {
+            uploadButton = null
+        }
         return (
             <View style={styles.container}>
                 {imageList}
-                {showbutton}
+                {showButton}
+                {uploadButton}
             </View>
         )
     }
@@ -114,9 +149,13 @@ const styles = StyleSheet.create({
         width: 200,
         backgroundColor: '#EEE',
     },
+    icon: {
+            textAlign: 'center',
+    },
     button: {
         padding: 20,
-
+        textAlign: 'center',
+        fontSize: 16,
     },
     ImageContainer: {
         borderRadius: 10,

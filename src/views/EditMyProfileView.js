@@ -34,9 +34,9 @@ export default class EditMyProfileView extends Component {
             })
     }
     sendEditData() {
-        const db = firebase.firestore()
+        const db = firebase.database()
         const { currentUser } = firebase.auth()
-        db.collection(`users/${currentUser.uid}/profiles`).doc('Profile')
+        db.ref(`users/${currentUser.uid}/profiles`)
             .update({
                 name: this.state.name,
                 nameKana: this.state.nameKana,

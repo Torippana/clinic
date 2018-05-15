@@ -22,11 +22,10 @@ export default class ShowMedicalTermView extends Component {
     }
     componentDidMount() {
         const { currentUser } = firebase.auth()
-        let medicalTerm = firebase.database()
+        firebase.database()
         .ref(`medical_term_summary/${currentUser.uid}`)
         .orderByChild('year_month')
         .on('child_added', (data) => {
-            console.log(data.val())
             this.setState({
                 medicalDataTerm: data.val(),
             })
@@ -36,11 +35,12 @@ export default class ShowMedicalTermView extends Component {
         const MedicalTermArray = this.state.medicalDataTerm
         let medicalTermList =[]
         for (key in MedicalTermArray) {
+            const yearMonth = key
             medicalTermList.push(
                 <RecordListItem
                     date={key}
                     key={key}
-                    onPress={() => this.props.navigation.navigate('ShowMedicalList', {termYear: key})}
+                    onPress={() => this.props.navigation.navigate('ShowMedicalList', {yearMonth: yearMonth})}
                 />
             )
         }

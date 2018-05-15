@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     Text,
     TextInput,
+    KeyboardAvoidingView,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -35,10 +36,15 @@ export default class ChatView extends Component {
     }
     render() {
         return (
-            <View style={styles.container}>
+            <KeyboardAvoidingView
+                behavior="padding"
+                style={styles.container}
+                keyboardVerticalOffset={50}
+                >
+
                 <View style={styles.child1}>
                     <ScrollView>
-
+                        <Text>Hello</Text>
                     </ScrollView>
                 </View>
                 <View style={styles.chatFormWrapper}>
@@ -68,7 +74,7 @@ export default class ChatView extends Component {
                         </Icon>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         )
     }
 }
@@ -77,15 +83,16 @@ let styles = StyleSheet.create({
         flex: 1,
     },
     child1: {
-        flex: 8,
+        flex: 7,
         backgroundColor: '#fff',
     },
     chatFormWrapper: {
-        flex: 1,
+
         backgroundColor: 'lightblue',
         flexDirection: 'row',
         alignItems: 'center',
         paddingLeft: 10,
+        height: 100,
     },
     chatForm: {
         flex: 5,

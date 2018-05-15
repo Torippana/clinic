@@ -23,19 +23,18 @@ export default class ShowMyProfileView extends Component {
     }
     //常に開いたらfirebaseより同期そしてsetState
     componentWillMount() {
-        console.log('ルーティング表示されただけで発動してるのか')
-        const db = firebase.firestore()
+        const db = firebase.database()
         const { currentUser } = firebase.auth()
-        db.collection(`users/${currentUser.uid}/profiles`).doc('Profile')
-            .onSnapshot((doc) => {
-                const userData = doc.data()
+        db.ref(`users/${currentUser.uid}/profiles`)
+            .on('value', (doc) => {
+                const userData = doc.val()
                     this.setState({
-                        name: doc.data().name,
-                        nameKana: doc.data().nameKana,
-                        gender: doc.data().gender,
-                        bloodType: doc.data().bloodType,
-                        birthday: doc.data().birthday,
-                        email: doc.data().email,
+                        name: doc.val().name,
+                        nameKana: doc.val().nameKana,
+                        gender: doc.val().gender,
+                        bloodType: doc.val().bloodType,
+                        birthday: doc.val().birthday,
+                        email: doc.val().email,
                         userData: userData,
                     })
             })
