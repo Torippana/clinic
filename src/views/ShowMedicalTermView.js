@@ -29,6 +29,7 @@ export default class ShowMedicalTermView extends Component {
             this.setState({
                 medicalDataTerm: data.val(),
             })
+            //loadingSpinnerを設定する（loadが完全に終わったタイミング)
         });
     }
     render() {

@@ -3,6 +3,7 @@ import {
     StyleSheet,
     View,
     Text,
+    FlatList,
 } from 'react-native'
 import RecordHeadBar from './elements/RecordHeadBar'
 import RecordTermBar from './elements/RecordTermBar'
@@ -17,6 +18,7 @@ export default class ShowMedicalListView extends Component {
         super(props)
         this.state = {
             RecordListTerm: null,
+            medicalMonthList: [],
         }
     }
     componentWillMount() {
@@ -28,35 +30,40 @@ export default class ShowMedicalListView extends Component {
         const startYearMonth = Number(`${params.yearMonth}01`)
         const endYearMonth = Number(`${params.yearMonth}31`)
         const { currentUser } = firebase.auth()
+        let orderItems = []
         firebase.database()
         .ref(`medical_data/${currentUser.uid}`)
         .orderByChild('timestamp')
         .startAt(startYearMonth)
         .endAt(endYearMonth)
-        .on('child_added', function(data) {
-            console.log(data.val());
-        });
-
+        //ソート後のオブジェクトをFlatListの公式に合わせて配列化
+        .on('child_added', (data) => {
+            orderItems.push(data.val())
+        })
+        console.log(orderItems)
+        this.setState({medicalMonthList: orderItems})
     }
+    _renderItem = ({item}) => (
+        <RecordListNameItem
+            hospitalName={item.clinic_name}
+            date={'2018/01/23'}
+            onPress={() => this.props.navigation.navigate('ShowMedicalDetai')}
+            alertComment={'再提出'}
+            alertNumber={1}
+        />
+    );
+    _keyExtractor = (item, index) => item.clinic_name;
     render() {
+
         return (
             <View style={styles.container}>
                 <RecordHeadBar>{NAME_OF_RECORD.Medical}</RecordHeadBar>
                 <RecordTermBar>{this.state.RecordListTerm}</RecordTermBar>
 
-                <RecordListNameItem
-                    hospitalName={'はるクリニック'}
-                    date={'2018/01/23'}
-                    onPress={() => this.props.navigation.navigate('ShowMedicalDetai')}
-                    alertComment={'再提出'}
-                    alertNumber={1}
-                />
-                <RecordListNameItem
-                    hospitalName={'テストクリニック'}
-                    date={'2018/01/30'}
-                    onPress={() => this.props.navigation.navigate('ShowMedicalDetai')}
-                    alertComment={'再提出'}
-                    alertNumber={null}
+                <FlatList
+                    data={this.state.medicalMonthList}
+                    keyExtractor={this._keyExtractor}
+                    renderItem={this._renderItem}
                 />
             </View>
         )
