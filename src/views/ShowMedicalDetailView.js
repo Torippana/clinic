@@ -27,18 +27,15 @@ export default class ShowMedicalDetailView extends Component {
             currentVisibleImageIndex: null,
         }
     }
-    componentDidMount() {
-        const { currentUser } = firebase.auth()
-        firebase.database()
-        .ref(`medical_data/${currentUser.uid}/id1`)
-        .on('value', (databaseMedicalData) => {
-            console.log(databaseMedicalData.val())
-            this.setState({
-                medicalDataClinicName: databaseMedicalData.val().clinic_name,
-                medicalDataDate: databaseMedicalData.val().date,
-                medicalDataImageUri: Object.values(databaseMedicalData.val().images),
-                medicalDataStatus: databaseMedicalData.val().status,
-            })
+    componentWillMount() {
+        const { params } = this.props.navigation.state
+        const databaseMedicalData = params.item
+        console.log(databaseMedicalData.date)
+        this.setState({
+            medicalDataDate: databaseMedicalData.date,
+            medicalDataImageUri: Object.values(databaseMedicalData.images),
+            medicalDataStatus: databaseMedicalData.status,
+            medicalDataClinicName: databaseMedicalData.clinic_name,
         })
     }
     openModal(index) {
@@ -53,6 +50,7 @@ export default class ShowMedicalDetailView extends Component {
 
     render() {
         const imageArray = this.state.medicalDataImageUri
+        console.log(imageArray)
         let medicalDataImages = []
         for (let i = 0; i < imageArray.length; i++) {
             medicalDataImages[i] = (

@@ -1,109 +1,69 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import {
-    StyleSheet,
     View,
-    ScrollView,
-    Alert,
-    TouchableOpacity,
     Text,
-    TextInput,
-    KeyboardAvoidingView,
-} from 'react-native'
+    Image,
+} from 'react-native';
+import { GiftedChat, Send } from 'react-native-gifted-chat'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 export default class ChatView extends Component {
-    constructor(props) {
-        super(props)
-        this.maxLength = 100;
-        this.state = {
-            chatMessage: null,
-            textLength: 0,
-            memberStatus: 0,
-        }
-    }
-    static navigationOptions = {
-        title: 'ドクターへ質問',
-    }
-    setChatMessage(message){
+    state = {
+        messages:[],
+    };
+
+    componentWillMount() {
         this.setState({
-            chatMessage: message,
-            textLength: message.length,
+            messages: [
+              {
+                _id: 1,
+                text: 'ご質問をどうぞ',
+                createdAt: new Date(),
+                user: {
+                  _id: 2,
+                  name: 'React Native',
+                  avatar: 'https://placeimg.com/140/140/any',
+                },
+              },
+            ],
         })
     }
+    renderSend(props) {
+            return (
+                <Send
+                    {...props}
+                >
+                    <View style={{marginRight: 10, marginBottom: 5}}>
+                        <Image style={{width: 20, height: 20}} source={{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}}/>
+                    </View>
+                </Send>
+            );
+        }
 
-    sendChatData() {
-        Alert.alert('APIへ送る')
+    //Sendボタンが押された時に実行されるメソッド
+    onSend = (messages = []) => {
+        this.setState((previousState) => ({
+            //stateで管理しているmessagesに送信されたメッセージを追加
+            messages: GiftedChat.append(previousState.messages, messages),
+        }));
     }
+
     render() {
         return (
-            <KeyboardAvoidingView
-                behavior="padding"
-                style={styles.container}
-                keyboardVerticalOffset={50}
-                >
+            <View style={{ backgroundColor: "#fff", flex: 1 }}>
+                <GiftedChat
+                    messages={this.state.messages}
+                    onSend={(messages) => {
+                        //send message to your backend
+                        this.onSend(messages)
+                    }}
+                    user={{
+                        _id: 1,
+                    }}
+                    renderSend={this.renderSend}
 
-                <View style={styles.child1}>
-                    <ScrollView>
-                        <Text>Hello</Text>
-                    </ScrollView>
-                </View>
-                <View style={styles.chatFormWrapper}>
-                    <TextInput
-                        style={styles.chatForm}
-                        maxLength={this.state.memberStatus === 1 ? 1000 : 100}
-                        multiline = {true}
-                        onChangeText={(message) => this.setChatMessage(message)}
-                    >
-                    </TextInput>
-                    <TouchableOpacity
-                        style={styles.textSendButton}
-                        onPress={() => this.sendChatData()}
-                    >
-                        <Text style={{
-                            fontSize: 10,
-                            color:'#fff',
-                            textAlign: 'right'
-                        }}>
-                            {this.state.textLength}/{this.state.memberStatus === 1 ? 1000 : 100}
-                        </Text>
-                        <Icon
-                            name={'send'}
-                            size={30}
-                            color='red'
-                        >
-                        </Icon>
-                    </TouchableOpacity>
-                </View>
-            </KeyboardAvoidingView>
+                />
+            </View>
         )
     }
 }
-let styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    child1: {
-        flex: 7,
-        backgroundColor: '#fff',
-    },
-    chatFormWrapper: {
-
-        backgroundColor: 'lightblue',
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingLeft: 10,
-        height: 100,
-    },
-    chatForm: {
-        flex: 5,
-        padding: 15,
-        backgroundColor: '#fff',
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#fff',
-    },
-    textSendButton: {
-        flex: 1,
-        alignItems: 'center',
-    }
-});

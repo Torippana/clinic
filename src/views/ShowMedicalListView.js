@@ -36,7 +36,7 @@ export default class ShowMedicalListView extends Component {
         .orderByChild('timestamp')
         .startAt(startYearMonth)
         .endAt(endYearMonth)
-        //ソート後のオブジェクトをFlatListの公式に合わせて配列化
+        //ソート後のオブジェクトをFlatListの公式ドキュメントに合わせて配列化
         .on('child_added', (data) => {
             orderItems.push(data.val())
         })
@@ -46,15 +46,14 @@ export default class ShowMedicalListView extends Component {
     _renderItem = ({item}) => (
         <RecordListNameItem
             hospitalName={item.clinic_name}
-            date={'2018/01/23'}
-            onPress={() => this.props.navigation.navigate('ShowMedicalDetai')}
+            date={item.date}
+            onPress={() => this.props.navigation.navigate('ShowMedicalDetai',{item})}
             alertComment={'再提出'}
-            alertNumber={1}
+            alertNumber={0}
         />
     );
     _keyExtractor = (item, index) => item.clinic_name;
     render() {
-
         return (
             <View style={styles.container}>
                 <RecordHeadBar>{NAME_OF_RECORD.Medical}</RecordHeadBar>
