@@ -46,19 +46,19 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     leftBox: {
-        flex: 1,
+        flex: 2,
         height: 50,
         borderRightColor: '#4c4c4c',
         borderRightWidth: 0.25,
     },
     rightBox: {
-        flex: 2,
+        flex: 3,
         height: 50,
     },
     title: {
         textAlign: 'center',
-        fontSize: 16,
         lineHeight: 50,
+        fontSize: 16,
         paddingLeft: 3,
     },
     item: {

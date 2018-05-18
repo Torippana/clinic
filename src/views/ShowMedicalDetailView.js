@@ -4,6 +4,7 @@ import {
     View,
     Text,
     TouchableHighlight,
+    ScrollView,
 } from 'react-native'
 import RecordHeadBar from './elements/RecordHeadBar'
 import ShowDetailClinicName from './elements/ShowDetailClinicName'
@@ -30,7 +31,6 @@ export default class ShowMedicalDetailView extends Component {
     componentWillMount() {
         const { params } = this.props.navigation.state
         const databaseMedicalData = params.item
-        console.log(databaseMedicalData.date)
         this.setState({
             medicalDataDate: databaseMedicalData.date,
             medicalDataImageUri: Object.values(databaseMedicalData.images),
@@ -50,7 +50,6 @@ export default class ShowMedicalDetailView extends Component {
 
     render() {
         const imageArray = this.state.medicalDataImageUri
-        console.log(imageArray)
         let medicalDataImages = []
         for (let i = 0; i < imageArray.length; i++) {
             medicalDataImages[i] = (
@@ -89,7 +88,9 @@ export default class ShowMedicalDetailView extends Component {
                         <Text style={styles.touchMessage}>
                             ※ 画像タップで拡大できます
                         </Text>
-                        {medicalDataStatusList}
+                        <ScrollView>
+                            {medicalDataStatusList}
+                        </ScrollView>
                     </View>
                     <RecordDetailModal
                         visible={this.state.modalVisible}

@@ -8,6 +8,7 @@ import {
     TouchableOpacity,
     AlertIOS,
     AsyncStorage,
+    KeyboardAvoidingView,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import firebase from 'firebase'
@@ -70,15 +71,18 @@ export default class SignupView extends React.Component{
     render() {
         return(
             <View style={styles.container} >
+                <KeyboardAvoidingView
+                    behavior="padding"
+                    style={styles.container}
+                    keyboardVerticalOffset={50}
+                >
                 <View style={styles.imageWrap} >
                     <Image
                         style={{
-                            width: 650,
-                            height: 330,
                             position: 'absolute',
                             top: 0,
                         }}
-                        source={require('../../images/toppage.jpg')}
+                        source={require('../../images/toppageicon.png')}
                     />
                     <Text
                         style={{
@@ -116,6 +120,7 @@ export default class SignupView extends React.Component{
                         </Text>
                     </TouchableOpacity>
                 </View>
+                </KeyboardAvoidingView>
             </View>
         );
     }
@@ -130,13 +135,11 @@ const styles = StyleSheet.create({
     },
     imageWrap: {
         flex: 1,
-        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
     },
     textWrap: {
         flex: 1,
-        backgroundColor: '#fff',
         alignItems: 'center',
     },
     input: {
@@ -144,7 +147,7 @@ const styles = StyleSheet.create({
         width: 330,
         borderColor: 'gray',
         borderWidth: 1,
-        marginTop: 10,
+        marginBottom: 10,
         paddingLeft: 5,
         backgroundColor:'#fff',
         borderRadius: 5,

@@ -94,6 +94,18 @@ export default class AddMyRecordView extends Component {
             }
         }
     }
+    fileDeleter() {
+        const storageRef = firebase.storage().ref();
+        const { currentUser } = firebase.auth()
+        storageRef.child(`users/${currentUser.uid}/imagesNonEdit`)
+        .delete()
+        .then(() => {
+            console.log('filedeleted successfully')
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+    }
 
     render() {
         let imageList = []
