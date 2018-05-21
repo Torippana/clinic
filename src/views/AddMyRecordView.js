@@ -11,6 +11,8 @@ import {
 import firebase from 'firebase'
 import ImagePicker from 'react-native-image-picker'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { YellowBox } from 'react-native'
+YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 
 export default class AddMyRecordView extends Component {
     constructor(props) {
@@ -58,124 +60,36 @@ export default class AddMyRecordView extends Component {
     }
     fileUploader() {
         const imageData = this.state.imageData;
-        const formattedImageData = `data:image/jpeg;base64,${imageData[0]}`;
-        const date = new Date()
-        const uploadDate = date.toLocaleDateString()
-        const uploadTimeStamp = date.getTime()
-        const { currentUser } = firebase.auth();
-        const storageRef = firebase.storage().ref();
-        const metadata = {
-            contentType: 'image/jpeg',
-        };
-
-        // const user = getCurrentUser();
-        const refImage = firebase.storage().ref(`users/${currentUser.uid}/imagesNonEdit/${currentUser.uid}${uploadTimeStamp}`);
-        refImage
-            .putString(imageData[0], 'base64', {contentType:'image/jpg'})
-            .then(() => {
-              console.log('Image uploaded');
-              Alert.alert(
-               'アップロードが完了しました',
-              )
-            })
-            .catch(error => {
-                console.log(error, '@@@@@@@@@@@@@@@@@@@@@@');
-            });
-
-        // .putString(formattedImageData, 'data_url' , metadata)
-        /*
-        console.log('formattedImageData is : ', formattedImageData);
-        storageRef
-            .child(`users/${currentUser.uid}/imagesNonEdit/${currentUser.uid}${uploadTimeStamp}`)
-            .putString(formattedImageData, 'data_url')
-            .then((snapshot) => {
-                console.log('storage uploaded!! : ', snapshot)
-                //upload to database
-                firebase
-                    .database()
-                    .ref(`users/${currentUser.uid}/imagesNonEdit/${currentUser.uid}${uploadTimeStamp}`)
-                    .set({
-                        uri: snapshot.downloadURL,
-                        date: uploadDate
-                    })
-                    .then(() => {
-                        Alert.alert(
-                         'アップロードが完了しました',
-                        )
-                    });
-                console.log('database uploaded!!')
-
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-        */
-
-        // const storageRef = firebase.storage().ref();
-        // // Create file metadata including the content type
-        // const metadata = {
-        //     contentType: 'image/jpeg',
-        // };
-        // const date = new Date()
-        // const uploadDate = date.toLocaleDateString()
-        // const uploadTimeStamp = date.getTime()
-        // const { currentUser } = firebase.auth()
-        // // Upload the file and metadata to storage
-        // //今入ってるものがbase64と確実に言い切れるように入れる前に型を判定する
-        // storageRef.child(`users/${currentUser.uid}/imagesNonEdit/${currentUser.uid}${uploadTimeStamp}`)
-        // .putString('data:image/jpeg;base64,' + imageData[0], 'data_url' , metadata)
-        // .then((snapshot) => {
-        //     console.log('storage uploaded!!')
-        //     //upload to database
-        //     firebase.database()
-        //     .ref(`users/${currentUser.uid}/imagesNonEdit/${currentUser.uid}${uploadTimeStamp}`)
-        //     .set({
-        //         uri: snapshot.downloadURL,
-        //         date: uploadDate
-        //     })
-        //     console.log('database uploaded!!')
-        // })
-        // .catch((error) => {
-        //     console.log(error)
-        // })
-        /*
         if (imageData.length > 0) {
             for(let i = 0; i < imageData.length; i++) {
                 // Create a root reference
-                const storageRef = firebase.storage().ref();
-                // Create file metadata including the content type
-                const metadata = {
-                    contentType: 'image/jpeg',
-                };
+                const storageRef = firebase.storage()
+                const databaseRef = firebase.database()
                 const date = new Date()
                 const uploadDate = date.toLocaleDateString()
                 const uploadTimeStamp = date.getTime()
                 const { currentUser } = firebase.auth()
                 // Upload the file and metadata to storage
-                //今入ってるものがbase64と確実に言い切れるように入れる前に型を判定する
-                storageRef.child(`users/${currentUser.uid}/imagesNonEdit/${currentUser.uid}${uploadTimeStamp}`)
-                .putString('data:image/jpeg;base64,' + this.state.imageData[i],'data_url' , metadata)
-                .then((snapshot) => {
-                    console.log('storage uploaded!!')
-                    //upload to database
-                    firebase.database()
+                storageRef
                     .ref(`users/${currentUser.uid}/imagesNonEdit/${currentUser.uid}${uploadTimeStamp}`)
-                    .set({
-                        uri: snapshot.downloadURL,
-                        date: uploadDate
+                    .putString(imageData[i], 'base64', {contentType:'image/jpg'})
+                    .then((response) => {
+                        console.log('storage uploaded!!')
+                        //upload to database
+                        databaseRef
+                            .ref(`users/${currentUser.uid}/imagesNonEdit/${currentUser.uid}${uploadTimeStamp}`)
+                            .set({
+                                uri: response.downloadURL,
+                                date: uploadDate
+                            })
+                            console.log('database uploaded!!')
+                            //最後だけ実行させる・・（ページ遷移・要修正）
                     })
-                    console.log('database uploaded!!')
-                    //最後だけ実行させる・・（ページ遷移・要修正）
-                    if( i === imageData.length - 1 ){
-                        console.log('ループが終わりました。');
-                    }
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
+                    .catch((error) => {
+                        console.log(error)
+                    })
             }
         }
-        */
     }
     fileDeleter() {
         const storageRef = firebase.storage().ref();

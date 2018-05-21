@@ -7,6 +7,10 @@ import {
     AlertIOS,
 } from 'react-native'
 import MyProfileEdit from "./components/MyProfileEditComponent"
+import MyProfileShow from "./components/MyProfileShowComponent"
+import MyProfilePickerEdit from "./components/MyProfilePickerEditComponent"
+import MyProfileShowPicker from "./components/MyProfileShowPicker"
+
 import firebase from 'firebase'
 
 export default class EditMyProfileView extends Component {
@@ -20,6 +24,7 @@ export default class EditMyProfileView extends Component {
             bloodType: null,
             email: null,
             created: null,
+            showDrumRoll: 0,
         }
     }
     componentWillMount() {
@@ -74,6 +79,13 @@ export default class EditMyProfileView extends Component {
             this.setState({email: edit})
         }
     }
+    //渡って来た数字でドラムロールの文言を
+    showDrumRoll(Number) {
+        this.setState({
+            showDrumRoll: Number,
+        })
+    }
+
     static navigationOptions = {
         title: 'マイプロフィール',
     }
@@ -90,16 +102,22 @@ export default class EditMyProfileView extends Component {
                     editValue={(edit) => this.setEditValues(edit,'nameKana')}
                     initialValue={this.state.nameKana}
                 />
-                <MyProfileEdit
-                    title={'性別：'}
-                    editValue={(edit) => this.setEditValues(edit,'gender')}
-                    initialValue={this.state.gender}
-                />
-                <MyProfileEdit
-                    title={'血液型：'}
-                    editValue={(edit) => this.setEditValues(edit,'bloodType')}
-                    initialValue={this.state.bloodType}
-                />
+                <TouchableOpacity
+                    onPress={() => this.showDrumRoll(1)}
+                >
+                    <MyProfileShowPicker
+                        title={'性別：'}
+                        getValue={this.state.gender}
+                    />
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => this.showDrumRoll(2)}
+                >
+                    <MyProfileShowPicker
+                        title={'血液型：'}
+                        getValue={this.state.bloodType}
+                    />
+                </TouchableOpacity>
                 <MyProfileEdit
                     title={'生年月日：'}
                     editValue={(edit) => this.setEditValues(edit,'birthday')}
@@ -111,21 +129,18 @@ export default class EditMyProfileView extends Component {
                     initialValue={this.state.email}
                 />
                 <TouchableOpacity
-                    onPress = {() => this.sendEditData()}
+                    onPress={() => this.sendEditData()}
                     style={styles.buttonWrapper}
                 >
                     <Text style={styles.button1}>
                         更新する
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => this.props.navigation.goBack()}
-                    style={styles.buttonWrapper}
-                >
-                    <Text style={styles.button2}>
-                        キャンセル
-                    </Text>
-                </TouchableOpacity>
+                <MyProfilePickerEdit
+                    judgeDrumRollMessage={this.state.showDrumRoll}
+                    initialValue={this.state.gender}
+                    editValue={(value) => this.setState({gender: value})}
+                />
             </View>
         )
     }

@@ -23,6 +23,7 @@ export default class ShowMedicalTermView extends Component {
     componentDidMount() {
         const { currentUser } = firebase.auth()
         firebase.database()
+        //ルーティングの時に数字を渡してページを判別して.refの書き換えを行う
         .ref(`medical_term_summary/${currentUser.uid}`)
         .orderByChild('year_month')
         .on('child_added', (data) => {

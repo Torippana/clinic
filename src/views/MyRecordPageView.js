@@ -26,19 +26,19 @@ export default class MyRecordPageView extends Component {
                     <MyRecordIcon
                         icon={'medkit'}
                         label={'処方箋\n' + '（おくすり）'}
-                        onPress={() => this.props.navigation.navigate('ShowPrescriptionTerm')}
+                        onPress={() => this.props.navigation.navigate('ShowMedicalTerm')}
                     />
                 </View>
                 <View style={styles.row}>
                     <MyRecordIcon
                         icon={'yen'}
                         label={'領収書\n' + '（医療費控除）'}
-                        onPress={() => this.props.navigation.navigate('ShowReceiptTerm')}
+                        onPress={() => this.props.navigation.navigate('ShowMedicalTerm')}
                     />
                     <MyRecordIcon
                         icon={'file-o'}
                         label={'血液検査結果'}
-                        onPress={() => this.props.navigation.navigate('ShowBloodTestTerm')}
+                        onPress={() => this.props.navigation.navigate('ShowMedicalTerm')}
                     />
                 </View>
                 <View style={styles.row}>
