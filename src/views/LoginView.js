@@ -86,22 +86,10 @@ export default class LoginView extends React.Component{
                         <Icon
                             name={'heartbeat'}
                             size={30}
-                            color='#000'
+                            color='#2c6be7'
                         >
                         </Icon>
                         DrChat
-                    </Text>
-                    <Text
-                        style={{
-                            marginTop: 6,
-                        }}>
-                        お医者さまと患者さまをリンクする
-                    </Text>
-                    <Text
-                        style={{
-                            marginTop: 6,
-                        }}>
-                        いつでも専門医のようなカウンセリングを
                     </Text>
                 </View>
                 <View style={ styles.textWrap }>
