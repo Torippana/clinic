@@ -11,9 +11,6 @@ export default class MyRecordPageView extends Component {
     constructor(props) {
         super(props)
     }
-    static navigationOptions = {
-        title: 'マイレコード',
-    };
     render() {
         return (
             <View style={styles.container}>
@@ -76,8 +73,8 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.5,
     },
     footer: {
-        height: 82,
-        backgroundColor: 'lightblue',
+        height: 72,
+        backgroundColor: '#305097',
         alignItems: 'center',
         flexDirection: 'row',
     },

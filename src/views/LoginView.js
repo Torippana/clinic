@@ -83,12 +83,6 @@ export default class LoginView extends React.Component{
                             fontSize: 35,
 
                         }}>
-                        <Icon
-                            name={'heartbeat'}
-                            size={30}
-                            color='#2c6be7'
-                        >
-                        </Icon>
                         DrChat
                     </Text>
                 </View>
@@ -117,7 +111,7 @@ export default class LoginView extends React.Component{
                         <Text
                             style={{
                                 fontWeight: 'bold',
-                                color: 'gray',
+                                color: '#fff',
                                 fontSize: 16,
                             }}>
                             ログイン
@@ -181,7 +175,7 @@ const styles = StyleSheet.create({
         height: 42,
         padding: 10,
         borderRadius: 25,
-        backgroundColor: 'lightblue',
+        backgroundColor: '#305097',
         alignItems: 'center',
         justifyContent: 'center',
         margin: 3,

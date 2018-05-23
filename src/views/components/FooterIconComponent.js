@@ -20,7 +20,7 @@ export default class FooterIcon extends Component{
                         <Icon
                             name={icon}
                             size={40}
-                            color='#4D4C43'
+                            color='#fff'
                         >
                         </Icon>
                     </Text>
@@ -42,8 +42,6 @@ const styles = StyleSheet.create({
     },
     footerIconText: {
         fontSize: 12,
-        textShadowColor: 'white',
-        textShadowOffset: {width: -3, height: 3},
-        textShadowRadius: 10,
+        color: '#fff'
     },
 });

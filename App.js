@@ -21,7 +21,10 @@ import ShowMedicalDetailView from './src/views/ShowMedicalDetailView'
 //Pages were used by StackNavigator
 const RootNavigator = StackNavigator({
         Login: {
-            screen: LoginView
+            screen: LoginView,
+            navigationOptions: () => ({
+                header: null
+            }),
         },
         Signup: {
             screen: SignupView
@@ -75,8 +78,15 @@ const RootNavigator = StackNavigator({
     {
         navigationOptions: {
             headerStyle: {
-                backgroundColor: 'lightblue',
+                backgroundColor: '#305097',
             },
+            headerTitleStyle: {
+                color: 'white',
+            },
+            headerBackTitleStyle: {
+                color: 'white',
+            },
+            headerTintColor: 'white',
         },
     },
 );

@@ -85,11 +85,17 @@ export default class EditMyProfileView extends Component {
             showDrumRoll: Number,
         })
     }
-
-    static navigationOptions = {
-        title: 'マイプロフィール',
-    }
     render() {
+        var drum_roll_view=null;
+        if(this.state.showDrumRoll==1){
+            drum_roll_view=(<MyProfilePickerEdit
+                judgeDrumRollMessage={this.state.showDrumRoll}
+                initialValue={this.state.gender}
+                editValue={(value) => this.setState({gender: value})}
+            />)
+        }else if(this.state.showDrumRoll==2){
+            drum_roll_view = (<Text>血液型</Text>)
+        }
         return (
             <View style={styles.container}>
                 <MyProfileEdit
@@ -136,11 +142,7 @@ export default class EditMyProfileView extends Component {
                         更新する
                     </Text>
                 </TouchableOpacity>
-                <MyProfilePickerEdit
-                    judgeDrumRollMessage={this.state.showDrumRoll}
-                    initialValue={this.state.gender}
-                    editValue={(value) => this.setState({gender: value})}
-                />
+                {drum_roll_view}
             </View>
         )
     }

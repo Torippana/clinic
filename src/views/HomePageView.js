@@ -30,9 +30,6 @@ export default class HomePageView extends Component {
             name: null,
         }
     }
-    static navigationOptions = {
-        title: 'ホーム',
-    }
     handlePress() {
         const { params } = this.props.navigation.state
         console.log(params)
@@ -89,8 +86,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     footer: {
-        flex: 1,
-        backgroundColor: 'lightblue',
+        height: 72,
+        backgroundColor: '#305097',
         alignItems: 'center',
         flexDirection: 'row',
     },

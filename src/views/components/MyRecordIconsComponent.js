@@ -23,7 +23,7 @@ export default class MyRecordIcon extends Component{
                         <Icon
                             name={icon}
                             size={100}
-                            color='lightblue'
+                            color='#305097'
                         >
                         </Icon>
                     </Text>
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     bigIconText: {
         fontSize: 18,
         fontWeight: "bold",
-        color: 'lightblue',
+        color: '#305097',
         marginTop: 10,
         textAlign: 'center',
     }
